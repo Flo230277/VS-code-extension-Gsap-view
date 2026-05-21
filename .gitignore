@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+
+# Build output
+out/
+dist/
+
+# VS Code
+.vscode/
+
+# VSIX packages
+*.vsix
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mac
+.DS_Store
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# OS
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Others
+*.log
+*.tgz
