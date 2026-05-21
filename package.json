@@ -1,0 +1,52 @@
+{
+  "name": "vs-code-extension-gsap-view",
+  "displayName": "GSAP Animation Studio",
+  "description": "Un builder d'animations GSAP dans VS Code façon Webflow, avec import/export, timeline, canevas, et messaging pro.",
+  "version": "1.0.0",
+  "publisher": "flo230277",
+  "engines": {
+    "vscode": ">=1.78.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onCommand:gsapStudio.openEditor"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "build:webview": "webpack --config webpack.config.js --mode production",
+    "watch:webview": "webpack --config webpack.config.js --watch",
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "build": "npm run compile && npm run build:webview",
+    "lint": "eslint . --ext .ts,.tsx",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.38",
+    "@types/react-dom": "^18.0.11",
+    "typescript": "^5.0.4",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "eslint": "^8.16.0",
+    "vsce": "^3.15.0"
+  },
+  "dependencies": {
+    "gsap": "^3.12.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "gsapStudio.openEditor",
+        "title": "Ouvrir GSAP Animation Studio"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Flo230277/VS-code-extension-GSap-view.git"
+  },
+  "license": "MIT",
+  "icon": "images/icon.png"
+}
