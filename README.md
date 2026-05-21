@@ -1,46 +1,58 @@
 # VS Code Extension GSAP Studio
 
-This repository hosts a VS Code extension that provides a visual interface for creating GSAP animations. 
+Cette extension permet de créer et prévisualiser visuellement des animations GSAP dans un éditeur intégré à Visual Studio Code.
 
-## Features
-- Visual drag-and-drop animation builder
-- Full GSAP plugins support
-  - `ScrollTrigger`, `Draggable`, `MorphSVG`, `MotionPath`, and more.
-- Export configurable animations to HTML/JS
-- Include customizable properties: `class`, `id`, text, images, and more
+## Fonctionnalités principales
+- Éditeur visuel drag-and-drop pour créer des animations GSAP
+- Support des plugins GSAP : ScrollTrigger, Draggable, MorphSVG, MotionPath, etc.
+- Exportation des animations en HTML et JavaScript
+- Interface React embarquée dans une Webview
 
-## How to Use
-1. Download and open the extension in VS Code.
-2. Open the animation builder using the command `GSAP Studio: Open Animation Editor`.
-3. Add elements (div, text, or images) to your canvas.
-4. Customize animations visually with timelines and GSAP tools.
-5. Preview animations in real-time.
-6. Export animation configurations to share in projects.
+## Structure du projet
 
-## Development Setup
-### Prerequisites
-- Node.js (v16 or higher)
-- npm
+```
+vscode-gsap-studio/
+├── .vscode/
+│   └── launch.json
+├── src/
+│   ├── extension.ts
+│   ├── webview/
+│   │   ├── App.tsx
+│   │   ├── index.tsx
+│   │   ├── components/
+│   │   │   └── Editor.tsx
+│   │   └── utils/
+│   │       └── export.ts
+├── package.json
+├── webpack.config.js
+├── tsconfig.json
+├── README.md
+└── out/
+```
 
-### Steps
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/Flo230277/VS-code-extension-Gsap-view.git
-    ```
-2. Install dependencies:
+## Installation, build et lancement
+
+1. Installer les dépendances :
     ```bash
     npm install
     ```
-3. Run the webpack build:
+2. Compiler la webview React :
     ```bash
     npm run build
     ```
-4. Launch the extension debug in VS Code.
+3. Depuis VS Code, lancer la commande `GSAP Studio: Open Animation Editor`.
 
-## Publishing
-To publish the extension in the VS Code Marketplace:
-1. Package the extension:
-    ```bash
-    npx vsce package
-    ```
-2. Publish it to the VS Code marketplace.
+## Ajouter/modifier du code React côté webview
+- Le point d’entrée React est `src/webview/App.tsx`.
+- Les composants personnalisés sont placés dans `src/webview/components/`.
+- Les outils d’export dans `src/webview/utils/`.
+
+## Développement de l’éditeur React
+Le composant `Editor` propose une base pour jouer une animation simple. Étends-le selon tes besoins pour avoir le drag-and-drop, la timeline ou d’autres contrôles.
+
+## Export HTML/JS
+La fonction d’export `exportHtmlJs` génère un extrait HTML/JS minimal pour l’animation GSAP. À enrichir selon la logique de ton éditeur.
+
+---
+
+Pour toute extension, modifie simplement les fichiers dans `src/webview/`, adapte le Webpack ou les composants et relance la commande de build.
