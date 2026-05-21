@@ -1,11 +1,22 @@
 import React from "react";
-import { Editor } from "./components/Editor";
+import { Timeline } from "./components/Timeline";
+import { Canvas } from "./components/Canvas";
+import { PropertiesPanel } from "./components/PropertiesPanel";
+import { Toolbar } from "./components/Toolbar";
+import { LayerList } from "./components/LayerList";
+import { AnimationStoreProvider } from "./store/animationStore";
 
-export const App: React.FC = () => (
-  <div style={{ padding: 24 }}>
-    <h2>GSAP Animation Studio</h2>
-    <Editor />
-  </div>
+const App: React.FC = () => (
+  <AnimationStoreProvider>
+    <div style={{display: "flex", height: "100vh", flexDirection: "column"}}>
+      <Toolbar />
+      <div style={{display: "flex", flex: 1}}>
+        <LayerList />
+        <Canvas />
+        <PropertiesPanel />
+      </div>
+      <Timeline />
+    </div>
+  </AnimationStoreProvider>
 );
-
 export default App;
