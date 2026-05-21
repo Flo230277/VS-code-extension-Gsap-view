@@ -20,17 +20,52 @@ export function activate(context: vscode.ExtensionContext) {
         }
       );
 
-      // Injection du contenu HTML/JS dans le panneau
-      panel.webview.html = getWebviewContent();
+      // Injection du contenu HTML/JS dans le panneau (GSAP chargé par Webpack/local, pas de CDN)
+      panel.webview.html = getWebviewContent(panel);
+
+      // === MESSAGING BIDIRECTIONNEL WEBVIEW <=> EXTENSION ===
+      panel.webview.onDidReceiveMessage(
+        async message => {
+          switch (message.type) {
+            case 'EXPORT_PROJECT': {
+              // Logique d'export, par exemple écrire sur le disque
+              log('Export de projet demandé');
+              vscode.window.showInformationMessage('Export projet (mock): ' + JSON.stringify(message.payload));
+              break;
+            }
+            case 'IMPORT_PROJECT': {
+              // Logique d'import, par exemple ouvrir un fichier, renvoyer à la webview
+              log('Import de projet demandé');
+              const uris = await vscode.window.showOpenDialog({ canSelectMany: false, filters: { 'JSON': ['json'] } });
+              if (uris && uris.length > 0) {
+                const fileUri = uris[0];
+                const fileData = await vscode.workspace.fs.readFile(fileUri);
+                const json = fileData.toString();
+                panel.webview.postMessage({ type: 'IMPORT_PROJECT_DATA', payload: json });
+              }
+              break;
+            }
+            case 'LOG': {
+              log(message.payload);
+              break;
+            }
+            default:
+              log('Message reçu inconnu: ' + message.type);
+          }
+        },
+        undefined,
+        context.subscriptions
+      );
     })
   );
 }
 
 /**
- * Cette fonction génère le contenu HTML affiché dans la WebView.
- * Le fichier injecte également le bundle React (compilé via Webpack).
+ * Génère le contenu HTML affiché dans la WebView.
+ * Injection sobre : GSAP importé localement par Webpack (import { gsap } from "gsap") dans React, pas de <script cdn>
  */
-function getWebviewContent(): string {
+function getWebviewContent(panel: vscode.WebviewPanel): string {
+  // Pour la sécurité, on peut générer un nonce unique et l'utiliser pour le bundle (optionnel)
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -38,7 +73,6 @@ function getWebviewContent(): string {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>GSAP Animation Studio</title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
       <style>
         body {
           margin: 0;
@@ -61,8 +95,15 @@ function getWebviewContent(): string {
 }
 
 /**
- * Cette fonction est appelée lorsque l'extension est désactivée.
+ * Logger central VSCode
+ */
+function log(msg: string) {
+  vscode.window.showInformationMessage(`[GSAP Studio] ${msg}`);
+}
+
+/**
+ * Désactivation
  */
 export function deactivate() {
-  // Nettoyage des ressources si nécessaire
+  // Rien à nettoyer pour l'instant
 }
