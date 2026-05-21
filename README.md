@@ -40,7 +40,12 @@ vscode-gsap-studio/
     ```bash
     npm run build
     ```
-3. Depuis VS Code, lancer la commande `GSAP Studio: Open Animation Editor`.
+3. Lancer le projet en mode développement (rebuild automatique) :
+    ```bash
+    npm run watch
+    ```
+4. Depuis VS Code, lancer la commande de débogage "Run Extension" (ou touche F5)
+5. Dans la palette de commandes VS Code, exécute : `GSAP Studio: Open Animation Editor`.
 
 ## Ajouter/modifier du code React côté webview
 - Le point d’entrée React est `src/webview/App.tsx`.
